@@ -18,8 +18,7 @@ public class NegativeAmountException extends Exception {
      * @param amount 
      */
     public NegativeAmountException(double amount) {
-        super(String.format("%.2f", amount) 
-                + " - A negative amount may not be deposited or withdrawn");
+        super("Negative amount, " + String.format("%.2f", amount) + ", may not be deposited or withdrawn");
         this.amount = amount;
     }
 

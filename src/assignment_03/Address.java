@@ -5,13 +5,14 @@
  */
 package assignment_03;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Barry Speller
  */
-public class Address {
+public class Address implements Serializable {
     private String street;
     private String city;
     private String state;

@@ -5,25 +5,36 @@
  */
 package assignment_03;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  *
  * @author Barry Speller
  */
-public class BankAccount {
+public class BankAccount implements Serializable {
     /**
      * Bank account type
      */
     public enum AccountType {
-        CHECKING, SAVINGS
+
+        /**
+         * Checking Account
+         */
+        CHECKING,
+
+        /**
+         * Savings Account
+         */
+        SAVINGS
     }
     
     //private String accountId;
     private AccountHolder accountHolder;
     private double accountBalance;
     private AccountType accountType;
-    //private Transaction[] accountRegister;
+    private ArrayList<Transaction> transactionRegister;
 
     /**
      * Constructs a bank account
@@ -31,12 +42,42 @@ public class BankAccount {
      * @param accountBalance
      * @param accountType 
      */
-    public BankAccount(AccountHolder accountHolder, double accountBalance, AccountType accountType) {
+    public BankAccount(AccountHolder accountHolder, AccountType accountType) {
         this.accountHolder = accountHolder;
-        this.accountBalance = accountBalance;
+        this.accountBalance = 0;
         this.accountType = accountType;
+        this.transactionRegister = new ArrayList<>();
     }
 
+    /**
+     * Enters valid transaction to transactionRegister
+     * @param transaction
+     * @throws InsufficientFundsException
+     * @throws NegativeAmountException
+     */
+    public void doTransaction(Transaction transaction) throws InsufficientFundsException, NegativeAmountException {
+        double transAmount = transaction.getAmount();
+        if (transAmount < 0) {
+            throw new NegativeAmountException(transAmount);
+        }
+        
+        TransactionType transType = transaction.getTransType();
+        if (transType == TransactionType.DEBIT 
+                && transAmount > this.accountBalance) {
+            throw new InsufficientFundsException(transAmount);
+        }
+        
+        switch(transType) {
+            case CREDIT:
+                this.accountBalance += transAmount;
+                break;
+            case DEBIT:
+                this.accountBalance -= transAmount;
+                break;
+        }
+        this.transactionRegister.add(transaction);
+    }
+    
     /**
      * Gets the account holder 
      * @return accountHolder
@@ -67,6 +108,11 @@ public class BankAccount {
      */
     public AccountType getAccountType() {
         return accountType;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" + "accountHolder=" + accountHolder + ", accountBalance=" + accountBalance + ", accountType=" + accountType + ", \ntransactionRegister=" + transactionRegister + '}';
     }
 
 }

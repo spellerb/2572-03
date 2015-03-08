@@ -5,13 +5,14 @@
  */
 package assignment_03;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Barry Speller
  */
-public class AccountHolder {
+public class AccountHolder implements Serializable {
     private String accountHolderName;
     private String accountHolderCompany;
     private Address accountHolderAddress;
@@ -58,6 +59,10 @@ public class AccountHolder {
      */
     public void setAccountHolderCompany(String accountHolderCompany) {
         this.accountHolderCompany = accountHolderCompany;
+    }
+
+    public Address getAccountHolderAddress() {
+        return accountHolderAddress;
     }
 
     @Override
